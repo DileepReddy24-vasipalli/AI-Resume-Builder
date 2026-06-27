@@ -1,4 +1,4 @@
-require('dotenv').config(); // .env ఫైల్ లోని కీ ని చదవడానికి
+require('dotenv').config(); 
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
@@ -7,17 +7,18 @@ const mammoth = require('mammoth');
 const Tesseract = require('tesseract.js'); 
 const fs = require('fs');
 const path = require('path');
-const { GoogleGenerativeAI } = require('@google/generative-ai'); // Gemini AI కోసం
+const { GoogleGenerativeAI } = require('@google/generative-ai'); 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(__dirname));
+app.get('/' (req, res) => {res.sendFile(path.join(__dirname, 'index.html'));});
 app.use(express.json());
 
-// జెమినీ ఏఐ సెటప్ (.env లో ఉన్న కీ ని తీసుకుంటుంది)
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }); // వేగంగా పనిచేసే మోడల్
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -30,7 +31,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// రెజ్యూమ్ అప్‌లోడ్ మరియు ఏఐ అనాలసిస్ API
+
 app.post('/api/upload', upload.single('resume'), async (req, res) => {
     try {
         if (!req.file) {
@@ -41,12 +42,12 @@ app.post('/api/upload', upload.single('resume'), async (req, res) => {
         const ext = path.extname(req.file.originalname).toLowerCase();
         let resumeText = "";
 
-        // యూజర్ ఫ్రంట్-ఎండ్ లో సెలెక్ట్ చేసిన ఆప్షన్లు
+    
         const { addSkills, improveDesc, fixFormat } = req.body;
 
         console.log(`Processing file: ${req.file.originalname}`);
 
-        // ఫైల్ రకాన్ని బట్టి టెక్స్ట్ చదవడం
+        
         if (ext === '.pdf') {
             const dataBuffer = fs.readFileSync(filePath);
             const data = await pdfParse(dataBuffer);
@@ -65,9 +66,9 @@ app.post('/api/upload', upload.single('resume'), async (req, res) => {
             return res.status(400).json({ error: "Unsupported file type." });
         }
 
-        fs.unlinkSync(filePath); // టెక్స్ట్ చదవడం అయిపోయాక ఫైల్ డిలీట్ చేయడం
+        fs.unlinkSync(filePath);
 
-     // --- ఏఐ (AI) ప్రాంప్ట్ తయారు చేయడం ---
+    
         let aiPrompt = `You are an Expert Resume Writer. I will provide you with a raw resume text. 
         Your task is to COMPLETELY REWRITE the resume to make it highly professional, ATS-friendly, and powerful.
         
@@ -84,10 +85,10 @@ app.post('/api/upload', upload.single('resume'), async (req, res) => {
         3. Format the entire output as clean HTML (use <h1>, <h2>, <ul>, <li>, <p>, <strong>).
         4. DO NOT wrap the output in \`\`\`html or any markdown. Return ONLY raw HTML code.`;
 
-        // జెమినీ ఏఐ కి డేటా పంపి రెస్పాన్స్ తీసుకోవడం
+
         const aiResult = await model.generateContent(aiPrompt);
         const aiSuggestions = aiResult.response.text();
-        // ఏఐ ఇచ్చిన సలహాలను ఫ్రంట్-ఎండ్‌కి పంపడం
+    
         res.json({ message: "Analysis complete", suggestions: aiSuggestions });
 
     } catch (error) {
