@@ -12,8 +12,19 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(__dirname));
-app.get('/' (req, res) => {res.sendFile(path.join(__dirname, 'index.html'));});
+
+let frontendPath = __dirname;
+if (fs.existsSync(path.join(__dirname, 'frontend', 'index.html'))) {
+    frontendPath = path.join(__dirname, 'frontend');
+} else if (fs.existsSync(path.join(__dirname, '../frontend', 'index.html'))) {
+    frontendPath = path.join(__dirname, '../frontend');
+}
+
+app.use(express.static(frontendPath));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+});
 app.use(express.json());
 
 
