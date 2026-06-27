@@ -53,7 +53,7 @@ analyzeBtn.addEventListener('click', async (e) => {
     formData.append('fixFormat', document.getElementById('fix-format').checked);
 
     try {
-        const response = await fetch('http://localhost:3000/api/upload', {
+        const response = await fetch('/api/upload', {
             method: 'POST',
             body: formData
         });

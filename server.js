@@ -10,9 +10,9 @@ const path = require('path');
 const { GoogleGenerativeAI } = require('@google/generative-ai'); // Gemini AI కోసం
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(express.static(path.join(__dirname, '../frontend')));
 app.use(express.json());
 
 // జెమినీ ఏఐ సెటప్ (.env లో ఉన్న కీ ని తీసుకుంటుంది)
