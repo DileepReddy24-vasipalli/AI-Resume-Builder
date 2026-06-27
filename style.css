@@ -40,7 +40,7 @@ header p {
     font-size: 14px;
 }
 
-/* Upload Area */
+
 .upload-area {
     border: 2px dashed #3498db;
     border-radius: 10px;
@@ -93,7 +93,7 @@ header p {
     color: #27ae60 !important;
 }
 
-/* User Inputs */
+
 .user-inputs {
     margin-bottom: 25px;
 }
@@ -125,7 +125,7 @@ header p {
     border-color: #ffa502;
 }
 
-/* Button */
+
 .analyze-btn {
     width: 100%;
     padding: 15px;
@@ -148,12 +148,12 @@ header p {
     background: #27ae60;
 }
 
-/* Hidden elements */
+
 .hidden {
     display: none !important;
 }
 
-/* Loading Spinner */
+
 #loading {
     text-align: center;
     margin-top: 20px;
@@ -174,7 +174,7 @@ header p {
     100% { transform: rotate(360deg); }
 }
 
-/* Results */
+
 .results-section {
     margin-top: 25px;
     padding-top: 25px;
